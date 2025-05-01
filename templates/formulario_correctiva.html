@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Validación de Productos - Correctiva</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Validación de Productos - Correctiva</h1>
+    <form action="/guardar_formulario" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Cant. Requerida</th>
+                    <th>Marca</th>
+                    <th>Referencia</th>
+                    <th># de Activo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(descripciones|length) %}
+                <tr>
+                    <td>{{ descripciones[i] }}</td>
+                    <td><input type="number" name="cantidad_{{ i }}"></td>
+                    <td><input type="number" name="cant_requerida_{{ i }}"></td>
+                    <td><input type="text" name="marca_{{ i }}"></td>
+                    <td><input type="text" name="referencia_{{ i }}"></td>
+                    <td><input type="text" name="activo_{{ i }}"></td>
+                    <td>
+                        <select name="estado_{{ i }}">
+                            <option value="Bueno">Bueno</option>
+                            <option value="Malo">Malo</option>
+                            <option value="No la tiene">No la tiene</option>
+                        </select>
+                    </td>
+                    <input type="hidden" name="descripcion_{{ i }}" value="{{ descripciones[i] }}">
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="hidden" name="total" value="{{ descripciones|length }}">
+        <br>
+        <button type="submit">Guardar Validación</button>
+    </form>
+</body>
+</html>

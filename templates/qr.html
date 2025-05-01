@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Correctiva</title>
+</head>
+<body>
+    <h1>QR Correctiva No. 1</h1>
+    <img src="{{ url_for('static', filename='qr/qr_code.png') }}" alt="Código QR" style="width:300px; height:300px;">
+    
+    <br><br>
+    <button onclick="window.print()">Imprimir QR</button>
+
+    <br><br>
+    <a href="{{ url_for('index') }}">Volver al Inicio</a>
+</body>
+</html>

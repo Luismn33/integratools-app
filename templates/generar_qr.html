@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>QR de Correctiva</title>
+</head>
+<body>
+    <h1>QR de Validación Correctiva</h1>
+
+    {% if qr_path %}
+        <div style="text-align:center; margin-top:30px;">
+            <img src="{{ url_for('static', filename='qr/qr_correctiva.png') }}" alt="Código QR" width="300">
+        </div>
+        <div style="text-align:center; margin-top:20px;">
+            <a href="{{ url_for('index') }}">Volver al inicio</a>
+        </div>
+    {% else %}
+        <p>No se pudo generar el QR.</p>
+    {% endif %}
+</body>
+</html>

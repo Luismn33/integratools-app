@@ -5,15 +5,9 @@
     <title>Generar QR Correctiva</title>
 </head>
 <body>
-    <h1>Generar QR para Correctiva</h1>
-    
-    <form action="/generar_qr" method="get">
+    <h1>Generar Código QR</h1>
+    <form action="{{ url_for('generar_qr_route') }}" method="get">
         <button type="submit">Generar QR</button>
     </form>
-
-    {% if qr_path %}
-        <h2>QR generado:</h2>
-        <img src="{{ qr_path }}" alt="QR Correctiva">
-    {% endif %}
 </body>
 </html>

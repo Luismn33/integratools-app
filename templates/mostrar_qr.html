@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Correctiva</title>
+</head>
+<body>
+    <h1>QR para Validación de Productos</h1>
+    <div style="text-align:center;">
+        <img src="{{ url_for('static', filename='qr/qr_correctiva.png') }}" alt="QR Correctiva" width="300">
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+        <button onclick="window.print()">Imprimir QR</button>
+    </div>
+</body>
+</html>

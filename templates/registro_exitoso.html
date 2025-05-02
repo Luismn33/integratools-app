@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro Exitoso</title>
+</head>
+<body>
+    <h1>✅ Información guardada correctamente.</h1>
+    <p>Tu archivo ha sido generado.</p>
+    <a href="{{ url_for('descargar_archivo', archivo=archivo) }}" download>
+        📥 Descargar archivo
+    </a>
+    <br><br>
+    <a href="{{ url_for('formulario') }}">📝 Volver al formulario</a>
+</body>
+</html>

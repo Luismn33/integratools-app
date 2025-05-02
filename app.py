@@ -10,8 +10,12 @@ app = Flask(__name__)
 pdf_url = "https://1drv.ms/b/c/38cd35cc36f2a749/EfleQtZJ4_VNlzmBeQH4ymMB2VVHHi4YKdfrJd3etenpTQ?e=0FGNTY"
 ruta_qr = os.path.join('static', 'qr', 'qr_code.png')
 
-# Ruta donde guardar el archivo Excel con las validaciones
-archivo_guardado = os.path.join("C:/Users/zagat/OneDrive/Integratools/", "validacion_correctiva.xlsx")
+# Ruta base del proyecto
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Crear nombre dinámico con fecha y hora para evitar sobrescribir
+fecha_archivo = datetime.now().strftime("%Y%m%d_%H%M%S")
+archivo_guardado = os.path.join(BASE_DIR, "data", f"validacion_correctiva_{fecha_archivo}.xlsx")
 
 # Lista de productos para el formulario
 descripciones = [
@@ -64,6 +68,11 @@ def guardar_formulario():
             fecha
         ]
         ws.append(fila)
+
+    # Crear nombre dinámico con fecha y hora para evitar sobrescribir
+    fecha_archivo = datetime.now().strftime("%Y%m%d_%H%M%S")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    archivo_guardado = os.path.join(BASE_DIR, "data", f"validacion_correctiva_{fecha_archivo}.xlsx")
 
     wb.save(archivo_guardado)
     return "✅ Información guardada correctamente."

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import qrcode
 import os
 from openpyxl import Workbook
@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Link del PDF para el QR
-pdf_url = "https://1drv.ms/b/c/38cd35cc36f2a749/EfleQtZJ4_VNlzmBeQH4ymMB2VVHHi4YKdfrJd3etenpTQ?e=0FGNTY"
+pdf_url = ""
 ruta_qr = os.path.join('static', 'qr', 'qr_code.png')
 
 # Ruta base del proyecto
@@ -71,11 +71,22 @@ def guardar_formulario():
 
     # Crear nombre dinámico con fecha y hora para evitar sobrescribir
     fecha_archivo = datetime.now().strftime("%Y%m%d_%H%M%S")
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     archivo_guardado = os.path.join(BASE_DIR, "data", f"validacion_correctiva_{fecha_archivo}.xlsx")
 
+    # Crear la carpeta 'data' si no existe
+    os.makedirs(os.path.join(BASE_DIR, "data"), exist_ok=True)
+
+    # Guardar el archivo
     wb.save(archivo_guardado)
-    return "✅ Información guardada correctamente."
+
+    # Redirigir a una página de éxito con el enlace de descarga
+    return render_template("registro_exitoso.html", archivo=os.path.basename(archivo_guardado))
+
+@app.route('/descargas/<archivo>')
+def descargar_archivo(archivo):
+    # Ruta a la carpeta 'data'
+    ruta_descargas = os.path.join(BASE_DIR, "data")
+    return send_from_directory(ruta_descargas, archivo, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)

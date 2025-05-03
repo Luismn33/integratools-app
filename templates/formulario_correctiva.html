@@ -39,34 +39,35 @@
                 <th># de Activo</th>
                 <th>Estado</th>
             </tr>
-            {% for i, descripcion in enumerate(descripciones) %}
-            <tr>
-                <td>
-                    {{ descripcion }}
-                    <input type="hidden" name="descripcion_{{ i }}" value="{{ descripcion }}">
-                </td>
-                <td><input type="number" name="cantidad_{{ i }}" min="0"></td>
-                <td><input type="number" name="cant_requerida_{{ i }}" min="0"></td>
-                <td>
-                    <select name="marca_{{ i }}">
-                        <option value="">--Seleccionar--</option>
-                        <option value="Bahco">Bahco</option>
-                        <option value="Irimo">Irimo</option>
-                        <option value="Otra">Otra</option>
-                    </select>
-                </td>
-                <td><input type="text" name="referencia_{{ i }}"></td>
-                <td><input type="text" name="activo_{{ i }}"></td>
-                <td>
-                    <select name="estado_{{ i }}">
-                        <option value="">--Seleccionar--</option>
-                        <option value="Bueno">Bueno</option>
-                        <option value="Malo">Malo</option>
-                        <option value="No la tiene">No la tiene</option>
-                    </select>
-                </td>
-            </tr>
-            {% endfor %}
+            {% for descripcion in descripciones %}
+{% set i = loop.index0 %}
+<tr>
+    <td>
+        {{ descripcion }}
+        <input type="hidden" name="descripcion_{{ i }}" value="{{ descripcion }}">
+    </td>
+    <td><input type="number" name="cantidad_{{ i }}" min="0"></td>
+    <td><input type="number" name="cant_requerida_{{ i }}" min="0"></td>
+    <td>
+        <select name="marca_{{ i }}">
+            <option value="">--Seleccionar--</option>
+            <option value="Bahco">Bahco</option>
+            <option value="Irimo">Irimo</option>
+            <option value="Otra">Otra</option>
+        </select>
+    </td>
+    <td><input type="text" name="referencia_{{ i }}"></td>
+    <td><input type="text" name="activo_{{ i }}"></td>
+    <td>
+        <select name="estado_{{ i }}">
+            <option value="">--Seleccionar--</option>
+            <option value="Bueno">Bueno</option>
+            <option value="Malo">Malo</option>
+            <option value="No la tiene">No la tiene</option>
+        </select>
+    </td>
+</tr>
+{% endfor %}
         </table>
         <br>
         <div style="text-align: center;">

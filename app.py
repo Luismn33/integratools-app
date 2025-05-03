@@ -1,29 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import qrcode
 import os
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from datetime import datetime
 
 app = Flask(__name__)
 
-# Link del PDF para el QR
+# Link del PDF para el QR (ajusta si usas QR)
 pdf_url = ""
 ruta_qr = os.path.join('static', 'qr', 'qr_code.png')
 
 # Ruta base del proyecto
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Crear nombre dinámico con fecha y hora para evitar sobrescribir
-fecha_archivo = datetime.now().strftime("%Y%m%d_%H%M%S")
-archivo_guardado = os.path.join(BASE_DIR, "data", f"validacion_correctiva_{fecha_archivo}.xlsx")
-
-# Lista de productos para el formulario
-descripciones = [
-    "Multímetro digital",
-    "Pinza amperimétrica",
-    "Taladro inalámbrico",
-    "Destornillador eléctrico"
-]
 
 @app.route('/')
 def index():
@@ -41,7 +29,23 @@ def ver_qr():
 
 @app.route('/formulario')
 def formulario():
-    return render_template("formulario_correctiva.html", descripciones=descripciones)
+    # Ruta del archivo con los productos
+    archivo_inventario = os.path.join(BASE_DIR, "data", "INVENTARIO_MORATO_VALORIZADO.xlsx")
+    
+    # Cargar productos desde la columna DESCRIPCION
+    productos = []
+    try:
+        wb = load_workbook(archivo_inventario, data_only=True)
+        ws = wb["CORRECTIVA"]  # Cambia el nombre de hoja si es diferente
+
+        for row in ws.iter_rows(min_row=2, values_only=True):  # Desde la fila 2 para omitir encabezado
+            descripcion = row[ws[1].index("DESCRIPCION")] if "DESCRIPCION" in [cell.value for cell in ws[1]] else row[0]
+            if descripcion:
+                productos.append(descripcion)
+    except Exception as e:
+        print("Error al leer productos:", e)
+
+    return render_template("formulario_correctiva.html", descripciones=productos)
 
 @app.route('/guardar_formulario', methods=['POST'])
 def guardar_formulario():
@@ -50,7 +54,6 @@ def guardar_formulario():
     ws = wb.active
     ws.title = "Validación"
 
-    # Encabezados
     encabezados = ["Descripción", "Cantidad", "Cant. Requerida", "Marca", "Referencia", "# de Activo", "Estado", "Fecha"]
     ws.append(encabezados)
 
@@ -69,22 +72,15 @@ def guardar_formulario():
         ]
         ws.append(fila)
 
-    # Crear nombre dinámico con fecha y hora para evitar sobrescribir
+    # Crear archivo con nombre único por fecha
     fecha_archivo = datetime.now().strftime("%Y%m%d_%H%M%S")
     archivo_guardado = os.path.join(BASE_DIR, "data", f"validacion_correctiva_{fecha_archivo}.xlsx")
-
-    # Crear la carpeta 'data' si no existe
-    os.makedirs(os.path.join(BASE_DIR, "data"), exist_ok=True)
-
-    # Guardar el archivo
     wb.save(archivo_guardado)
 
-    # Redirigir a una página de éxito con el enlace de descarga
     return render_template("registro_exitoso.html", archivo=os.path.basename(archivo_guardado))
 
 @app.route('/descargas/<archivo>')
 def descargar_archivo(archivo):
-    # Ruta a la carpeta 'data'
     ruta_descargas = os.path.join(BASE_DIR, "data")
     return send_from_directory(ruta_descargas, archivo, as_attachment=True)
 

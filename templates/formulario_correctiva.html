@@ -1,60 +1,39 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Formulario de Validación</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container py-5">
-        <h2 class="mb-4">Validación de Productos</h2>
-        <form method="post" action="{{ url_for('guardar_formulario') }}">
-            <input type="hidden" name="total" value="{{ descripciones|length }}">
-            {% for i in range(descripciones|length) %}
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ descripciones[i] }}</h5>
-                        <input type="hidden" name="descripcion_{{ i }}" value="{{ descripciones[i] }}">
-
-                        <div class="mb-2">
-                            <label class="form-label">Cantidad</label>
-                            <input type="number" class="form-control" name="cantidad_{{ i }}" required>
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">Cantidad Requerida</label>
-                            <input type="number" class="form-control" name="cant_requerida_{{ i }}" required>
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">Marca</label>
-                            <input type="text" class="form-control" name="marca_{{ i }}">
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">Referencia</label>
-                            <input type="text" class="form-control" name="referencia_{{ i }}">
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">Número de Activo</label>
-                            <input type="text" class="form-control" name="activo_{{ i }}">
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select" name="estado_{{ i }}">
-                                <option value="bueno">Bueno</option>
-                                <option value="malo">Malo</option>
-                                <option value="no la tiene">No la tiene</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-
-            <button type="submit" class="btn btn-primary">Guardar Información</button>
-        </form>
+<form method="POST" action="{{ url_for('guardar_formulario') }}">
+    <div class="productos">
+        {% for descripcion in descripciones %}
+        <div class="producto">
+            <div class="campo">
+                <label for="cantidad_{{ loop.index }}">Cantidad</label>
+                <input type="text" id="cantidad_{{ loop.index }}" name="cantidad_{{ loop.index }}">
+            </div>
+            <div class="campo">
+                <label for="cant_requerida_{{ loop.index }}">Cantidad Requerida</label>
+                <input type="text" id="cant_requerida_{{ loop.index }}" name="cant_requerida_{{ loop.index }}">
+            </div>
+            <div class="campo">
+                <label for="marca_{{ loop.index }}">Marca</label>
+                <select name="marca_{{ loop.index }}" id="marca_{{ loop.index }}">
+                    <option value="BAHCO">Marca 1</option>
+                    <option value="TRUPER">Marca 2</option>
+                    <option value="RACING">Marca 3</option>
+                    <option value="STANLEY">Marca 4</option>
+                    <option value="PROTO">Marca 5</option>
+                    <option value="VISEGRIP">Marca 6</option>
+                    <option value="IRIMO">Marca 7</option>
+                    <option value="URREA">Marca 8</option>
+                    <option value="INGERSOLL RAND">Marca 9</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="referencia_{{ loop.index }}">Referencia</label>
+                <input type="text" id="referencia_{{ loop.index }}" name="referencia_{{ loop.index }}">
+            </div>
+            <div class="campo">
+                <label for="estado_{{ loop.index }}">Estado</label>
+                <input type="text" id="estado_{{ loop.index }}" name="estado_{{ loop.index }}">
+            </div>
+        </div>
+        {% endfor %}
     </div>
-</body>
-</html>
+    <button type="submit">Guardar</button>
+</form>

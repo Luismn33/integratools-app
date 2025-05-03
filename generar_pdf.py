@@ -61,7 +61,7 @@ while producto_index < len(productos):
         ('FONTSIZE', (0,0), (-1,-1), 9),
     ]))
 
-    table_width, table_height = table.wrap(0, 0)
+    table_width, table_height = table.wrap(0, 0) 
     y_position = height - espacio_encabezado
 
     # Dibuja la tabla

@@ -48,7 +48,11 @@ def index():
 def generar_qr():
     # Generar el link absoluto al PDF alojado localmente (servicio Flask)
     pdf_url = url_for('static', filename='pdf/correctiva_no1.pdf', _external=True)
+    print("URL generada para el QR:", pdf_url)  # <-- Línea de depuración útil
 
+    if os.path.exists(ruta_qr):
+        os.remove(ruta_qr)
+        
     # Crear el QR con la URL al PDF
     qr = qrcode.make(pdf_url)
     qr.save(ruta_qr)

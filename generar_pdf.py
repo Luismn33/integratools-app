@@ -6,7 +6,7 @@ import pandas as pd
 import os
 
 # Configuraciones
-archivo_excel = 'INVENTARIO_MORATO_VALORIZADO.xlsx'
+archivo_excel = 'data/INVENTARIO_MORATO_VALORIZADO.xlsx'
 hoja = 'CORRECTIVA'
 ruta_logo = 'static/img/Integratools.jpg'
 ruta_pdf_salida = 'static/pdf/correctiva_no1.pdf'

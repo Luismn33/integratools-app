@@ -46,13 +46,19 @@ def index():
 
 @app.route('/generar_qr')
 def generar_qr():
+    # Generar el link absoluto al PDF alojado localmente (servicio Flask)
+    pdf_url = url_for('static', filename='pdf/correctiva_no1.pdf', _external=True)
+
+    # Crear el QR con la URL al PDF
     qr = qrcode.make(pdf_url)
     qr.save(ruta_qr)
+
     return redirect(url_for('ver_qr'))
 
 @app.route('/ver_qr')
 def ver_qr():
-    return render_template('qr.html')
+    import time
+    return render_template('qr.html', timestamp=int(time.time()))
 
 @app.route('/formulario')
 def formulario():

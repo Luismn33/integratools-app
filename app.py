@@ -13,6 +13,33 @@ ruta_qr = os.path.join('static', 'qr', 'qr_code.png')
 # Ruta base del proyecto
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+def obtener_descripciones_excel():
+    try:
+        ruta_excel = os.path.join(BASE_DIR, "data", "INVENTARIO_MORATO_VALORIZADO.xlsx")
+        wb = load_workbook(ruta_excel, data_only=True)
+        ws = wb["CORRECTIVA"]
+        
+        fila_encabezados = next(ws.iter_rows(min_row=1, max_row=1, values_only=True))
+        print(f"Encabezados encontrados: {fila_encabezados}")  # Opcional para depuración
+
+        try:
+            idx_descripcion = fila_encabezados.index("DESCRIPCION")
+        except ValueError:
+            print(f"No se encontró la columna 'DESCRIPCION'.")
+            return []
+
+        descripciones = []
+        for fila in ws.iter_rows(min_row=2, values_only=True):
+            descripcion = fila[idx_descripcion]
+            if descripcion:
+                descripciones.append(str(descripcion).strip())
+
+        return descripciones
+
+    except Exception as e:
+        print("Error al leer productos:", e)
+        return []
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -29,22 +56,7 @@ def ver_qr():
 
 @app.route('/formulario')
 def formulario():
-    # Ruta del archivo con los productos
-    archivo_inventario = os.path.join(BASE_DIR, "data", "INVENTARIO_MORATO_VALORIZADO.xlsx")
-    
-    # Cargar productos desde la columna DESCRIPCION
-    productos = []
-    try:
-        wb = load_workbook(archivo_inventario, data_only=True)
-        ws = wb["CORRECTIVA"]  # Cambia el nombre de hoja si es diferente
-
-        for row in ws.iter_rows(min_row=2, values_only=True):  # Desde la fila 2 para omitir encabezado
-            descripcion = row[ws[1].index("DESCRIPCION")] if "DESCRIPCION" in [cell.value for cell in ws[1]] else row[0]
-            if descripcion:
-                productos.append(descripcion)
-    except Exception as e:
-        print("Error al leer productos:", e)
-
+    productos = obtener_descripciones_excel()
     return render_template("formulario_correctiva.html", descripciones=productos)
 
 @app.route('/guardar_formulario', methods=['POST'])

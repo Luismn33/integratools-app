@@ -1,39 +1,77 @@
-<form method="POST" action="{{ url_for('guardar_formulario') }}">
-    <div class="productos">
-        {% for descripcion in descripciones %}
-        <div class="producto">
-            <div class="campo">
-                <label for="cantidad_{{ loop.index }}">Cantidad</label>
-                <input type="text" id="cantidad_{{ loop.index }}" name="cantidad_{{ loop.index }}">
-            </div>
-            <div class="campo">
-                <label for="cant_requerida_{{ loop.index }}">Cantidad Requerida</label>
-                <input type="text" id="cant_requerida_{{ loop.index }}" name="cant_requerida_{{ loop.index }}">
-            </div>
-            <div class="campo">
-                <label for="marca_{{ loop.index }}">Marca</label>
-                <select name="marca_{{ loop.index }}" id="marca_{{ loop.index }}">
-                    <option value="BAHCO">Marca 1</option>
-                    <option value="TRUPER">Marca 2</option>
-                    <option value="RACING">Marca 3</option>
-                    <option value="STANLEY">Marca 4</option>
-                    <option value="PROTO">Marca 5</option>
-                    <option value="VISEGRIP">Marca 6</option>
-                    <option value="IRIMO">Marca 7</option>
-                    <option value="URREA">Marca 8</option>
-                    <option value="INGERSOLL RAND">Marca 9</option>
-                </select>
-            </div>
-            <div class="campo">
-                <label for="referencia_{{ loop.index }}">Referencia</label>
-                <input type="text" id="referencia_{{ loop.index }}" name="referencia_{{ loop.index }}">
-            </div>
-            <div class="campo">
-                <label for="estado_{{ loop.index }}">Estado</label>
-                <input type="text" id="estado_{{ loop.index }}" name="estado_{{ loop.index }}">
-            </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Validación Correctiva</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input, select {
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Formulario de Validación - Correctiva</h2>
+    <form method="POST" action="{{ url_for('guardar_formulario') }}">
+        <input type="hidden" name="total" value="{{ descripciones|length }}">
+        <table>
+            <tr>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Cant. Requerida</th>
+                <th>Marca</th>
+                <th>Referencia</th>
+                <th># de Activo</th>
+                <th>Estado</th>
+            </tr>
+            {% for i, descripcion in enumerate(descripciones) %}
+            <tr>
+                <td>
+                    {{ descripcion }}
+                    <input type="hidden" name="descripcion_{{ i }}" value="{{ descripcion }}">
+                </td>
+                <td><input type="number" name="cantidad_{{ i }}" min="0"></td>
+                <td><input type="number" name="cant_requerida_{{ i }}" min="0"></td>
+                <td>
+                    <select name="marca_{{ i }}">
+                        <option value="">--Seleccionar--</option>
+                        <option value="Bahco">Bahco</option>
+                        <option value="Irimo">Irimo</option>
+                        <option value="Otra">Otra</option>
+                    </select>
+                </td>
+                <td><input type="text" name="referencia_{{ i }}"></td>
+                <td><input type="text" name="activo_{{ i }}"></td>
+                <td>
+                    <select name="estado_{{ i }}">
+                        <option value="">--Seleccionar--</option>
+                        <option value="Bueno">Bueno</option>
+                        <option value="Malo">Malo</option>
+                        <option value="No la tiene">No la tiene</option>
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <div style="text-align: center;">
+            <button type="submit">Guardar Validación</button>
         </div>
-        {% endfor %}
-    </div>
-    <button type="submit">Guardar</button>
-</form>
+    </form>
+</body>
+</html>

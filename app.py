@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import qrcode
 import os
+import time
 from openpyxl import Workbook, load_workbook
 from datetime import datetime
 
@@ -47,7 +48,7 @@ def index():
 @app.route('/generar_qr')
 def generar_qr():
     # Generar el link absoluto al PDF alojado localmente (servicio Flask)
-    pdf_url = url_for('static', filename='pdf/correctiva_no1.pdf', _external=True)
+    pdf_url = url_for('static', filename='pdf/correctiva_no1.pdf', _external=True) + f"?v={int(time.time())}"
     print("URL generada para el QR:", pdf_url)  # <-- Línea de depuración útil
 
     if os.path.exists(ruta_qr):

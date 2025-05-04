@@ -117,4 +117,6 @@ def descargar_archivo(archivo):
     return send_from_directory(ruta_descargas, archivo, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get("PORT", 5000))  # Render asigna dinámicamente el puerto
+    app.run(host="0.0.0.0", port=port)

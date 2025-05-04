@@ -2,138 +2,89 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Validación</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <title>Validación Correctiva</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            max-width: 1000px;
-            margin: auto;
-            box-shadow: 0 0 12px rgba(0,0,0,0.1);
-        }
-        .logo-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .logo-container img {
-            max-width: 200px;
-            height: auto;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            margin-top: 20px;
-        }
-        select, input[type="text"] {
-            padding: 5px;
-            width: 100%;
-            box-sizing: border-box;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            font-family: Arial, sans-serif;
         }
         th, td {
             border: 1px solid #ccc;
-            padding: 6px;
+            padding: 8px;
             text-align: center;
         }
         th {
-            background-color: #eee;
+            background-color: #f2f2f2;
         }
-        .submit-btn {
-            margin-top: 20px;
-            display: block;
+        input, select {
             width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            border: none;
-            color: white;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
         }
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
-        .sede-select {
-            margin-bottom: 20px;
+        h2 {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='img/integratools.jpg') }}" alt="Logo Integratools">
-        </div>
-        <h1>Formulario de Validación de Productos</h1>
-        
-        <form method="POST" action="/guardar">
-            <!-- Lista desplegable para sede -->
-            <div class="sede-select">
-                <label for="sede"><strong>Sede:</strong></label>
-                <select name="sede" id="sede" required>
-                    {% for i in range(1, 11) %}
-                        <option value="Correctiva No{{ i }}">Correctiva No{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Descripción</th>
-                        <th>Cantidad</th>
-                        <th>Cant. Requerida</th>
-                        <th>Marca</th>
-                        <th>Referencia</th>
-                        <th># de Activo</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for producto in productos %}
-                    <tr>
-                        <td>{{ producto['DESCRIPCION'] }}</td>
-                        <td><input type="text" name="cantidad_{{ loop.index }}" required></td>
-                        <td><input type="text" name="cant_requerida_{{ loop.index }}" required></td>
-                        <td>
-                            <select name="marca_{{ loop.index }}" required>
-                                <option value="">Seleccionar</option>
-                                <option value="Bahco">Bahco</option>
-                                <option value="Irimo">Irimo</option>
-                                <option value="Otra">Otra</option>
-                            </select>
-                        </td>
-                        <td><input type="text" name="referencia_{{ loop.index }}"></td>
-                        <td><input type="text" name="activo_{{ loop.index }}"></td>
-                        <td>
-                            <select name="estado_{{ loop.index }}" required>
-                                <option value="">Seleccionar</option>
-                                <option value="Bueno">Bueno</option>
-                                <option value="Malo">Malo</option>
-                                <option value="No la tiene">No la tiene</option>
-                            </select>
-                        </td>
-                        <input type="hidden" name="descripcion_{{ loop.index }}" value="{{ producto['DESCRIPCION'] }}">
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <input type="hidden" name="total_productos" value="{{ productos|length }}">
-            <button type="submit" class="submit-btn">Enviar</button>
-        </form>
+    <div style="text-align: center; margin-bottom: 10px;">
+        <img src="{{ url_for('static', filename='img/integratools.jpg') }}" alt="Logo" style="max-height: 80px; width: auto; object-fit: contain;">
     </div>
+    <h2>Formulario de Validación - Correctiva</h2>
+    <form method="POST" action="{{ url_for('guardar_formulario') }}">
+        <input type="hidden" name="total" value="{{ descripciones|length }}">
+        <table>
+            <tr>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Cant. Requerida</th>
+                <th>Marca</th>
+                <th>Referencia</th>
+                <th># de Activo</th>
+                <th>Estado</th>
+                <th>Sede</th>
+            </tr>
+            {% for descripcion in descripciones %}
+            {% set i = loop.index0 %}
+<tr>
+    <td>
+        {{ descripcion }}
+        <input type="hidden" name="descripcion_{{ i }}" value="{{ descripcion }}">
+    </td>
+    <td><input type="number" name="cantidad_{{ i }}" min="0"></td>
+    <td><input type="number" name="cant_requerida_{{ i }}" min="0"></td>
+    <td>
+        <select name="marca_{{ i }}">
+            <option value="">--Seleccionar--</option>
+            <option value="Bahco">Bahco</option>
+            <option value="Irimo">Irimo</option>
+            <option value="Otra">Otra</option>
+        </select>
+    </td>
+    <td><input type="text" name="referencia_{{ i }}"></td>
+    <td><input type="text" name="activo_{{ i }}"></td>
+    <td>
+        <select name="estado_{{ i }}">
+            <option value="">--Seleccionar--</option>
+            <option value="Bueno">Bueno</option>
+            <option value="Malo">Malo</option>
+            <option value="No la tiene">No la tiene</option>
+        </select>
+    </td>
+    <td>
+        <select name="sede_{{ i }}">
+            <option value="">--Seleccionar--</option>
+            {% for n in range(1, 11) %}
+            <option value="Correctiva No{{ n }}">Correctiva No{{ n }}</option>
+            {% endfor %}
+        </select>
+    </td>
+</tr>
+{% endfor %}
+        </table>
+        <br>
+        <div style="text-align: center;">
+            <button type="submit">Guardar Validación</button>
+        </div>
+    </form>
 </body>
 </html>

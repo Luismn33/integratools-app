@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import qrcode
+import subprocess
 import os
 import time
 from openpyxl import Workbook, load_workbook
@@ -64,6 +65,14 @@ def generar_qr():
 def ver_qr():
     import time
     return render_template('qr.html', timestamp=int(time.time()))
+
+@app.route('/actualizar_pdf')
+def actualizar_pdf():
+    try:
+        subprocess.run(["python", "generar_pdf.py"], check=True)
+        return "PDF generado exitosamente"
+    except Exception as e:
+        return f"Error al generar PDF: {e}"
 
 @app.route('/formulario')
 def formulario():

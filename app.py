@@ -86,7 +86,7 @@ def guardar_formulario():
     ws = wb.active
     ws.title = "Validación"
 
-    encabezados = ["Descripción", "Cantidad", "Cant. Requerida", "Marca", "Referencia", "# de Activo", "Estado", "Fecha"]
+    encabezados = ["Descripción", "Cantidad", "Cant. Requerida", "Marca", "Referencia", "# de Activo", "Estado", "Sede", "Fecha"]
     ws.append(encabezados)
 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -100,6 +100,7 @@ def guardar_formulario():
             request.form.get(f"referencia_{i}"),
             request.form.get(f"activo_{i}"),
             request.form.get(f"estado_{i}"),
+            request.form.get(f"sede_{i}"),
             fecha
         ]
         ws.append(fila)

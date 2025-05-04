@@ -26,6 +26,7 @@
     </style>
 </head>
 <body>
+    <img src="{{ url_for('static', filename='img/integratools.jpg') }}" alt="Logo" style="height: 60px; float: left; margin-right: 20px;">
     <h2>Formulario de Validación - Correctiva</h2>
     <form method="POST" action="{{ url_for('guardar_formulario') }}">
         <input type="hidden" name="total" value="{{ descripciones|length }}">
@@ -38,9 +39,10 @@
                 <th>Referencia</th>
                 <th># de Activo</th>
                 <th>Estado</th>
+                <th>Sede</th>
             </tr>
             {% for descripcion in descripciones %}
-{% set i = loop.index0 %}
+            {% set i = loop.index0 %}
 <tr>
     <td>
         {{ descripcion }}
@@ -64,6 +66,14 @@
             <option value="Bueno">Bueno</option>
             <option value="Malo">Malo</option>
             <option value="No la tiene">No la tiene</option>
+        </select>
+    </td>
+    <td>
+        <select name="sede_{{ i }}">
+            <option value="">--Seleccionar--</option>
+            {% for n in range(1, 11) %}
+            <option value="Correctiva No{{ n }}">Correctiva No{{ n }}</option>
+            {% endfor %}
         </select>
     </td>
 </tr>

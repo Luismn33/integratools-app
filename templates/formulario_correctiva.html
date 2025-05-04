@@ -26,10 +26,10 @@
     </style>
 </head>
 <body>
-    <div style="text-align: center; margin-bottom: 10px;">
-        <img src="{{ url_for('static', filename='img/integratools.jpg') }}" alt="Logo" style="max-height: 80px; width: auto; object-fit: contain;">
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+        <img src="{{ url_for('static', filename='img/integratools.jpg') }}" alt="Logo" style="height: auto; max-height: 60px; width: auto; object-fit: contain; margin-right: 20px;">
+        <h2 style="margin: 0;">Formulario de Validación - Correctiva</h2>
     </div>
-    <h2>Formulario de Validación - Correctiva</h2>
     <form method="POST" action="{{ url_for('guardar_formulario') }}">
         <input type="hidden" name="total" value="{{ descripciones|length }}">
         <table>

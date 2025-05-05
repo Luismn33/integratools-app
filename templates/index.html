@@ -47,6 +47,25 @@
             transform: scale(1.05);
             background: linear-gradient(135deg, #1976d2, #2196f3);
         }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #333;
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 9999;
+        }
+
+        .toast.mostrar {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -57,9 +76,36 @@
             <button type="submit">Generar QR</button>
         </form>
 
-        <form action="/actualizar_pdf" method="get">
-            <button type="submit">Actualizar PDF</button>
-        </form>
+        <!-- Botón que llama a la función de JS -->
+        <button onclick="actualizarPDF()">Actualizar PDF</button>
     </div>
+
+    <!-- Contenedor para el toast -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        function mostrarToast(mensaje, colorFondo = '#333') {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensaje;
+            toast.style.backgroundColor = colorFondo;
+            toast.classList.add('mostrar');
+
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+            }, 3000);
+        }
+
+        function actualizarPDF() {
+            fetch('/actualizar_pdf')
+                .then(response => response.text())
+                .then(data => {
+                    const exito = data.toLowerCase().includes('exitosamente');
+                    mostrarToast(data, exito ? '#28a745' : '#dc3545'); // verde o rojo
+                })
+                .catch(error => {
+                    mostrarToast('Error al conectar con el servidor.', '#dc3545');
+                });
+        }
+    </script>
 </body>
 </html>

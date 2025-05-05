@@ -46,3 +46,39 @@ button {
     cursor: pointer;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    background: url("../img/herramientas.jpg") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-index {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.95); /* fondo blanco semitransparente */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.boton-dinamico {
+    background: #00796b;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    margin: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.boton-dinamico:hover {
+    background: #004d40;
+    transform: scale(1.05);
+}

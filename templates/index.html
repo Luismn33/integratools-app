@@ -3,17 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Generar QR Correctiva</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url("../img/herramientas.jpg") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contenedor-index {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        button {
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+        }
+    </style>
 </head>
 <body>
     <div class="contenedor-index">
-    <h1>Generar Código QR</h1>
-        <form action="/generar_qr" method="get">
-        <button type="submit">Generar QR</button>
-    </form>
+        <h1>Generar Código QR</h1>
 
-    <form action="/actualizar_pdf" method="get">
-        <button type="submit">Actualizar PDF</button>
-    </form>
+        <form action="/generar_qr" method="get">
+            <button type="submit">Generar QR</button>
+        </form>
+
+        <form action="/actualizar_pdf" method="get">
+            <button type="submit">Actualizar PDF</button>
+        </form>
     </div>
 </body>
 </html>
